@@ -6,7 +6,7 @@ import pandas as pd
 import folium
 import branca.colormap as cm
 
-# 1. Original Project Setup Imports
+# Original Project Setup Imports
 PROJECT_ROOT = Path(__file__).resolve().parent  
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
@@ -43,7 +43,7 @@ def resolve_destinations(args: argparse.Namespace, config) -> list[object]:
         valid = ", ".join(sorted([*config.example_locations, "both_campuses"]))
         raise SystemExit(f"Unknown destination key {exc}. Valid keys: {valid}") from exc
 
-# --- 2. The Wrapper Function for Streamlit ---
+# The Wrapper Function for Streamlit
 def run_routing_pipeline_from_ui(origin_lat: float, origin_lon: float, time_period: str, destination_key: str):
     """
     Modification: Added destination_key parameter to dynamically select the campus destination.
@@ -97,7 +97,7 @@ def run_routing_pipeline_from_ui(origin_lat: float, origin_lon: float, time_peri
     return config.route_geojson_path, config.route_summary_csv_path
 
 
-# --- 3. Our Map Render Function ---
+# Map Render Function
 def render_final_map(geojson_file, csv_file, visible_routes=None):
     """
     Modifications:
@@ -121,7 +121,7 @@ def render_final_map(geojson_file, csv_file, visible_routes=None):
     else:
         get_color = lambda x: "#39FF14"
 
-    # Add: Extract origin and destination coordinates, place highlighted Markers
+    # Extract origin and destination coordinates, place highlighted Markers
     if not gdf.empty:
         start_coord = gdf.iloc[0].geometry.coords[0]
         end_coord = gdf.iloc[0].geometry.coords[-1]
