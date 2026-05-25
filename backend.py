@@ -13,8 +13,7 @@ import folium
 import branca.colormap as cm
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[0]
-sys.path.insert(0, str(PROJECT_ROOT / "src"))
+
 
 from src.zurich_safe_routing.config import DEFAULT_CONFIG, ensure_project_directories
 from src.zurich_safe_routing.exports import export_route_outputs
