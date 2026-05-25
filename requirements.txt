@@ -1,7 +1,10 @@
-geopandas
-pandas
-folium
 branca
+folium
+geopandas
+matplotlib
+networkx
+osmnx
+pandas
+shapely
 streamlit
 streamlit-folium
-networkx
