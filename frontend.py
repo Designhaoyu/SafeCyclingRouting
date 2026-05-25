@@ -11,12 +11,12 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ── Session state ─────────────────────────────────────────────────────────────
+# Session state
 for k, v in [("orig_lat", 47.3769), ("orig_lon", 8.5417), ("calculation_successful", False)]:
     if k not in st.session_state:
         st.session_state[k] = v
 
-# ── CSS ───────────────────────────────────────────────────────────────────────
+# CSS 
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap');
@@ -272,7 +272,7 @@ div.element-container:has(.eth-header) {
 </style>
 """, unsafe_allow_html=True)
 
-# ── Header (in normal document flow, centred) ─────────────────────────────────
+# Header
 st.markdown("""
 <div class="eth-header">
   <div class="eth-title">ETH Zürich&nbsp;<b>/</b>&nbsp;Safe Cycling Routing</div>
@@ -280,12 +280,10 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ═══════════════════════════════════════════════════════════════════════════════
 # SIDEBAR
-# ═══════════════════════════════════════════════════════════════════════════════
 with st.sidebar:
 
-    # ── 01 Origin ──────────────────────────────────────────────────────────
+    # Origin 
     st.markdown('<span class="sb-label">01 — Origin</span>', unsafe_allow_html=True)
     st.caption("Click the map to set your start point")
 
@@ -327,7 +325,7 @@ with st.sidebar:
 
     st.markdown("---")
 
-    # ── 02 Destination ─────────────────────────────────────────────────────
+    # Destination
     st.markdown('<span class="sb-label">02 — Destination</span>', unsafe_allow_html=True)
     dest_options = {
         "ETH Zentrum":     "eth_zentrum",
@@ -340,7 +338,7 @@ with st.sidebar:
 
     st.markdown("---")
 
-    # ── 03 Departure Hour ──────────────────────────────────────────────────
+    # Departure Hour
     st.markdown('<span class="sb-label">03 — Departure Hour</span>', unsafe_allow_html=True)
     time_options = [str(i) for i in range(24)]
     selected_time = st.selectbox(
@@ -349,7 +347,7 @@ with st.sidebar:
 
     st.markdown("---")
 
-    # ── 04 Visible Routes ──────────────────────────────────────────────────
+    # Visible Routes
     st.markdown('<span class="sb-label">04 — Visible Routes</span>', unsafe_allow_html=True)
     show_balanced = st.checkbox("Balanced  (recommended)", value=True)
     show_safest   = st.checkbox("Safest",   value=True)
@@ -367,9 +365,7 @@ with st.sidebar:
         "→  Generate Routes", type="primary", use_container_width=True
     )
 
-# ═══════════════════════════════════════════════════════════════════════════════
 # MAIN — Routing
-# ═══════════════════════════════════════════════════════════════════════════════
 if calculate_btn:
     with st.spinner(f"Computing optimised routes to {dest_choice}…"):
         try:
@@ -385,9 +381,7 @@ if calculate_btn:
         except Exception as e:
             st.error(f"Routing error: {e}")
 
-# ═══════════════════════════════════════════════════════════════════════════════
 # MAIN — Results
-# ═══════════════════════════════════════════════════════════════════════════════
 if st.session_state.get("calculation_successful", False):
 
     current_geojson = st.session_state["saved_geojson"]
