@@ -16,11 +16,11 @@ import branca.colormap as cm
 PROJECT_ROOT = Path(__file__).resolve().parents[0]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
-from zurich_safe_routing.config import DEFAULT_CONFIG, ensure_project_directories
-from zurich_safe_routing.exports import export_route_outputs
-from zurich_safe_routing.graph_builder import build_or_load_graph, graph_source_label
-from zurich_safe_routing.routing import compare_route_strategies, prepare_edge_weights
-from zurich_safe_routing.safety_data import (
+from src.zurich_safe_routing.config import DEFAULT_CONFIG, ensure_project_directories
+from src.zurich_safe_routing.exports import export_route_outputs
+from src.zurich_safe_routing.graph_builder import build_or_load_graph, graph_source_label
+from src.zurich_safe_routing.routing import compare_route_strategies, prepare_edge_weights
+from src.zurich_safe_routing.safety_data import (
     attach_safety_scores_to_graph,
     load_safety_scores,
 )
