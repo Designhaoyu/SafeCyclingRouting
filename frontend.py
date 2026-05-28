@@ -3,6 +3,7 @@ import streamlit as st
 import pandas as pd
 import folium
 from streamlit_folium import st_folium
+import plotly.graph_objects as go
 
 from backend import run_routing_pipeline_from_ui, render_final_map
 
@@ -429,8 +430,7 @@ if st.session_state.get("calculation_successful", False):
         return "#8e8e93"
  
     st.markdown('<div class="section-head">Route Summary Dashboard</div>', unsafe_allow_html=True)
- 
-    import plotly.graph_objects as go
+
  
     def metric_bar(df, col, title, unit, fmt=".1f"):
         colors = [route_color(r) for r in df[COL_TYPE]]
