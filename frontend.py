@@ -1,3 +1,4 @@
+from pyparsing import col
 import streamlit as st
 import pandas as pd
 import folium
@@ -406,8 +407,127 @@ if st.session_state.get("calculation_successful", False):
     mask = summary_df["route_type"].str.lower().apply(
         lambda x: any(k in x for k, v in visible_routes_dict.items() if v)
     )
-    with st.expander("📊  Route Summary", expanded=False):
-        st.dataframe(summary_df[mask], hide_index=True, use_container_width=True)
+    df = summary_df[mask].copy()
+ 
+    # Column name mapping 
+    COL_TYPE = "route_type"
+    COL_TIME = "estimated_travel_time_min" 
+    COL_RISK = "mean_risk_score" 
+    COL_DIST = "total_distance_km" 
+ 
+    ROUTE_COLORS = {
+        "balanced": "#c8f135",
+        "safest":   "#3bf0e4",
+        "shortest": "#ff9f40",
+        "fastest":  "#ff6b6b",
+    }
+    def route_color(name):
+        name_l = str(name).lower()
+        for k, c in ROUTE_COLORS.items():
+            if k in name_l:
+                return c
+        return "#8e8e93"
+ 
+    st.markdown('<div class="section-head">Route Summary Dashboard</div>', unsafe_allow_html=True)
+ 
+    import plotly.graph_objects as go
+ 
+    def metric_bar(df, col, title, unit, fmt=".1f"):
+        colors = [route_color(r) for r in df[COL_TYPE]]
+        fig = go.Figure(go.Bar(
+            x=df[COL_TYPE].str.capitalize(),
+            y=df[col],
+            marker_color=colors,
+            marker_line_width=0,
+            text=[f"{v:{fmt}} {unit}" for v in df[col]],
+            textposition="outside",
+            textfont=dict(family="DM Mono, monospace", size=11, color="#f0f0f0"),
+        ))
+        y_min = df[col].min()
+        y_max = df[col].max()
+        padding = (y_max - y_min) * 0.35
+        fig.update_layout(
+            title=dict(text=title, font=dict(
+                family="Space Grotesk, sans-serif", size=11, color="#8e8e93"),
+                x=0, xanchor="left"),
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            font=dict(family="Space Grotesk, sans-serif", color="#f0f0f0"),
+            margin=dict(l=0, r=0, t=36, b=0),
+            height=220,
+            showlegend=False,
+            xaxis=dict(
+                showgrid=False, zeroline=False,
+                tickfont=dict(family="DM Mono, monospace", size=11, color="#8e8e93"),
+            ),
+            yaxis=dict(
+                range=[max(0, y_min - padding), y_max + padding],
+                showgrid=True,
+                gridcolor="#2c2c2e",
+                zeroline=False,
+                tickfont=dict(
+                    family="DM Mono, monospace",
+                    size=10,
+                    color="#8e8e93"
+                ),
+            ),
+        )
+        fig.update_traces(width=0.5)
+        return fig
+ 
+    cols_present = all(c in df.columns for c in [COL_TIME, COL_RISK, COL_DIST])
+ 
+    if cols_present:
+        best_time = df.loc[df[COL_TIME].idxmin()]
+        best_risk = df.loc[df[COL_RISK].idxmin()]
+        best_dist = df.loc[df[COL_DIST].idxmin()]
+ 
+        kpi1, kpi2, kpi3 = st.columns(3)
+ 
+        def kpi_card(container, label, value, unit, route_name, color):
+            container.markdown(
+                f'<div style="background:#242426;border:1px solid #3a3a3c;border-radius:8px;'
+                f'padding:16px 20px;border-top:3px solid {color};">'
+                f'<div style="font-family:\'DM Mono\',monospace;font-size:9px;letter-spacing:.18em;'
+                f'text-transform:uppercase;color:#8e8e93;margin-bottom:8px;">{label}</div>'
+                f'<div style="font-family:\'Space Grotesk\',sans-serif;font-size:28px;font-weight:700;'
+                f'color:#f0f0f0;line-height:1;">{value}'
+                f'<span style="font-size:14px;color:#8e8e93;margin-left:4px;">{unit}</span></div>'
+                f'<div style="font-family:\'DM Mono\',monospace;font-size:10px;color:{color};'
+                f'margin-top:6px;letter-spacing:.06em;">\u2191 {route_name.capitalize()} </div>'
+                f'</div>',
+                unsafe_allow_html=True
+            )
+ 
+        kpi_card(kpi1, "Fastest Travel Time",
+                 f"{best_time[COL_TIME]:.0f}", "min",
+                 best_time[COL_TYPE], route_color(best_time[COL_TYPE]))
+        kpi_card(kpi2, "Lowest Risk Score",
+                 f"{best_risk[COL_RISK]:.2f}", "",
+                 best_risk[COL_TYPE], route_color(best_risk[COL_TYPE]))
+        kpi_card(kpi3, "Shortest Distance",
+                 f"{best_dist[COL_DIST]:.2f}", "km",
+                 best_dist[COL_TYPE], route_color(best_dist[COL_TYPE]))
+ 
+        st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
+ 
+        ch1, ch2, ch3 = st.columns(3)
+        with ch1:
+            st.plotly_chart(
+                metric_bar(df, COL_TIME, "TRAVEL TIME", "min"),
+                use_container_width=True)
+        with ch2:
+            st.plotly_chart(
+                metric_bar(df, COL_RISK, "AVG RISK SCORE", "", fmt=".2f"),
+                use_container_width=True)
+        with ch3:
+            st.plotly_chart(
+                metric_bar(df, COL_DIST, "DISTANCE", "km"),
+                use_container_width=True)
+    else:
+        missing = [c for c in [COL_TIME, COL_RISK, COL_DIST] if c not in df.columns]
+        st.warning(f"Columns not found: {missing}. Available: {list(df.columns)}")
+        st.dataframe(df, hide_index=True, use_container_width=True)
 
 else:
     st.markdown("""
