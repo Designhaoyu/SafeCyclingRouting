@@ -231,13 +231,11 @@ The Streamlit application can be deployed directly from this repository using St
 - Risk scores are derived from historical police-registered accident records and therefore represent long-term risk patterns rather than real-time cycling conditions.
 - Accident reports capture only recorded incidents and may underrepresent minor crashes or near-miss events, potentially introducing reporting bias.
 - Safety estimation is based primarily on accident density and road classification, and does not explicitly account for factors such as traffic volume, weather, lighting conditions, road surface quality, or cyclist experience.
-- The model assumes homogeneous cyclist behaviour and does not distinguish between different rider profiles (e.g., commuter cyclists, recreational cyclists, or e-bike users).
 
 ---
 
 ## Potential Future Work
 
-- Support arbitrary origin–destination routing across the Zurich cycling network instead of fixed campus destinations.
 - Benchmark routes against Google Maps / Apple Maps to quantify the safety–efficiency trade-off
 - Integrate real-time traffic volume and weather-dependent friction models
 - Extend to a WebGIS service supporting any-to-any queries across the greater Zurich area
