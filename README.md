@@ -207,8 +207,6 @@ A Streamlit web application (`frontend.py`) that:
 streamlit run frontend.py
 ```
 
-Then open [http://localhost:8501](http://localhost:8501).
-
 ---
 
 ## Deployment
