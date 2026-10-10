@@ -1,9 +1,9 @@
 route_type,origin_name,destination_name,origin_node,destination_node,weight_attribute,number_of_edges,estimated_travel_time_min,total_risk_exposure,mean_risk_score,combined_cost,alpha,beta,base_weight,total_distance_km
-shortest_distance,Wiedikon,ETH Zentrum,3906839266,4324863889,weight_distance,76,13.84,2996.82,0.8598,3485.638,,,,3.486
-fastest_time,Wiedikon,ETH Zentrum,3906839266,4324863889,weight_time,94,12.98,3149.89,0.8669,778.6372,,,,3.634
-safest_route,Wiedikon,ETH Zentrum,3906839266,4324863889,weight_safety,102,17.52,1851.97,0.4246,1851.9697,,,,4.362
-balanced_route,Wiedikon,ETH Zentrum,3906839266,4324863889,weight_balanced_time_alpha_0_5_beta_0_5,98,15.97,1900.2,0.4596,0.6137,0.5,0.5,time,4.134
-shortest_distance,Wiedikon,ETH Hoenggerberg,3906839266,29353925,weight_distance,91,25.03,4328.12,0.7313,5918.0665,,,,5.918
-fastest_time,Wiedikon,ETH Hoenggerberg,3906839266,29353925,weight_time,110,22.69,4938.98,0.7869,1361.2625,,,,6.276
-safest_route,Wiedikon,ETH Hoenggerberg,3906839266,29353925,weight_safety,145,37.12,2992.02,0.3554,2992.0163,,,,8.418
-balanced_route,Wiedikon,ETH Hoenggerberg,3906839266,29353925,weight_balanced_time_alpha_0_5_beta_0_5,95,24.26,3479.38,0.5773,1.0282,0.5,0.5,time,6.027
+shortest_distance,Wiedikon,ETH Zentrum,3906839266,4324863889,weight_distance,76,13.84,2985.68,0.8566,3485.638,,,,3.486
+fastest_time,Wiedikon,ETH Zentrum,3906839266,4324863889,weight_time,94,12.98,3120.44,0.8587,778.6372,,,,3.634
+safest_route,Wiedikon,ETH Zentrum,3906839266,4324863889,weight_safety,98,21.68,2075.29,0.3901,2075.2902,,,,5.32
+balanced_route,Wiedikon,ETH Zentrum,3906839266,4324863889,weight_balanced_time_alpha_0_8_beta_0_2,88,15.06,2289.83,0.6227,0.9057,0.8,0.2,time,3.677
+shortest_distance,Wiedikon,ETH Hoenggerberg,3906839266,29353925,weight_distance,91,25.03,3787.5,0.64,5918.0665,,,,5.918
+fastest_time,Wiedikon,ETH Hoenggerberg,3906839266,29353925,weight_time,110,22.69,4914.38,0.783,1361.2625,,,,6.276
+safest_route,Wiedikon,ETH Hoenggerberg,3906839266,29353925,weight_safety,90,29.32,2924.92,0.4321,2924.9214,,,,6.77
+balanced_route,Wiedikon,ETH Hoenggerberg,3906839266,29353925,weight_balanced_time_alpha_0_8_beta_0_2,88,24.24,3048.22,0.5097,1.3428,0.8,0.2,time,5.98

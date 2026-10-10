@@ -311,8 +311,8 @@ def render_final_map(geojson_file, csv_file):
 
     # Add layer control and save
     folium.LayerControl().add_to(m)
-    m.save("recommended_route_map.html")
-    print("Successfully generated map: recommended_route_map.html")
+    m.save(str(DEFAULT_CONFIG.results_dir / "recommended_route_map.html"))
+    print("Successfully generated map: results/recommended_route_map.html")
     
     return m
 

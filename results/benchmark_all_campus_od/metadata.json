@@ -1,0 +1,23 @@
+{
+  "hour": 8,
+  "graph_nodes": 20229,
+  "graph_edges": 45254,
+  "intersection_nodes": 13823,
+  "covered_intersection_nodes": 13823,
+  "campus_od_counts": {
+    "eth_zentrum": 13799,
+    "eth_hoenggerberg": 13799
+  },
+  "total_od_pairs": 27598,
+  "routes": 110392,
+  "missing_risk_edges": 0,
+  "sampling": "All risk-covered street_count >= 3 origins with a directed path to each campus; exclude destination itself",
+  "aggregation": "Equal weight for every OD, no observed travel demand weighting",
+  "algorithm": "Reverse single-source Dijkstra per destination and strategy; original forward edge weights; ties may select a different equally optimal path",
+  "forward_crosschecks": 80,
+  "graph_sha256": "33b93c46f42bd445f1b17ce8d5f2b70a6e8ab34f7d1bd2fc9180b826dcc7d1d9",
+  "scores_sha256": "77d4e9131027d5eb88e12bfa08ba4f0e8a6c9550222ea7c5fe0d5075e8fa843a",
+  "risk_model": "hierarchical_bayesian_gamma_poisson_50m_2011_2025",
+  "balanced_alpha_time": 0.8,
+  "balanced_beta_risk": 0.2
+}

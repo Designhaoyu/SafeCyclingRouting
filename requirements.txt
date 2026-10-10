@@ -9,3 +9,5 @@ shapely
 streamlit
 streamlit-folium
 plotly
+numpy
+scipy

@@ -131,9 +131,9 @@ def default_route_strategies(graph: nx.MultiDiGraph) -> list[RouteStrategy]:
         RouteStrategy("safest_route", "weight_safety"),
         RouteStrategy(
             "balanced_route",
-            add_balanced_weight(graph, alpha=0.5, beta=0.5, base_weight="time"),
-            alpha=0.5,
-            beta=0.5,
+            add_balanced_weight(graph, alpha=0.8, beta=0.2, base_weight="time"),
+            alpha=0.8,
+            beta=0.2,
             base_weight="time",
         ),
     ]

@@ -1,0 +1,46 @@
+{
+  "hour": 8,
+  "od_pairs": 27598,
+  "routes": 303578,
+  "scores_sha256": "77d4e9131027d5eb88e12bfa08ba4f0e8a6c9550222ea7c5fe0d5075e8fa843a",
+  "endpoint_checks": [
+    {
+      "alpha": 0,
+      "reference": "safest_route",
+      "max_abs_time_difference": 45.58760442940792,
+      "max_abs_risk_difference": 1.08631915617525
+    },
+    {
+      "alpha": 0.8,
+      "reference": "balanced_route",
+      "max_abs_time_difference": 7.815970093361102e-14,
+      "max_abs_risk_difference": 5.4569682106375694e-12
+    },
+    {
+      "alpha": 1,
+      "reference": "fastest_time",
+      "max_abs_time_difference": 0.17665490137812867,
+      "max_abs_risk_difference": 2623.7754575459903
+    }
+  ],
+  "example_constraint_choice": {
+    "scope": "all_campuses",
+    "alpha_time": 0.9,
+    "beta_risk": 0.1,
+    "n_pairs": 27598,
+    "risk_reduction_pct_mean": 30.540493510234253,
+    "risk_reduction_pct_median": 31.01397231708117,
+    "time_penalty_pct_mean": 8.096871538988248,
+    "time_penalty_pct_median": 6.414432907227385,
+    "distance_penalty_pct_mean": -1.7019219540321215,
+    "distance_penalty_pct_median": -0.897649226543884,
+    "extra_time_min_mean": 1.6067860165298635,
+    "extra_time_min_median": 1.1925044975675867,
+    "risk_improved_pct": 91.74215522863976,
+    "risk_improved_with_time_le_15_distance_le_10_pct": 74.16117109935503
+  },
+  "selected_final_weight": {
+    "alpha_time": 0.8,
+    "beta_risk": 0.2
+  }
+}
