@@ -6,6 +6,7 @@ from streamlit_folium import st_folium
 import plotly.graph_objects as go
 
 from backend import run_routing_pipeline_from_ui, render_final_map
+from src.zurich_safe_routing.map_tiles import carto_tile_options
 
 st.set_page_config(
     page_title="ETH Zurich Safe Cycling Routing",
@@ -292,8 +293,7 @@ with st.sidebar:
     m_picker = folium.Map(
         location=[47.3769, 8.5417],
         zoom_start=12,
-        tiles="CartoDB dark_matter",
-        attr=" ",
+        **carto_tile_options(),
         zoom_control=True,
         scrollWheelZoom=True,
         dragging=True

@@ -13,3 +13,6 @@ results/bayesian_risk/score_comparison.csv
 results/benchmark_all_campus_od/route_metrics.csv
 results/benchmark_all_campus_od/paired_tradeoffs.csv
 results/weight_sensitivity/od_weight_tradeoffs.csv
+
+.streamlit/secrets.toml
+results/recommended_route_map.html

@@ -17,6 +17,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[0]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from src.zurich_safe_routing.config import DEFAULT_CONFIG, ensure_project_directories
+from src.zurich_safe_routing.map_tiles import carto_tile_options
 from src.zurich_safe_routing.exports import export_route_outputs
 from src.zurich_safe_routing.graph_builder import build_or_load_graph, graph_source_label
 from src.zurich_safe_routing.routing import compare_route_strategies, prepare_edge_weights
@@ -231,7 +232,7 @@ def render_final_map(geojson_file, csv_file):
     map_center = [start_point[1], start_point[0]] 
     
     # Initialize the base map (Removed fixed zoom_start to allow auto-fitting later)
-    m = folium.Map(location=map_center, tiles="cartodbdark_matter")
+    m = folium.Map(location=map_center, **carto_tile_options())
     
     # Risk color scale 
     risk_col = 'risk_score'
