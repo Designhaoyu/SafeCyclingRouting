@@ -13,4 +13,12 @@ Normalization is min-max across graph edges for the requested hour. The coeffici
 
 NetworkX weighted shortest paths choose node sequences. Between parallel edges the edge with the lowest selected objective is chosen. Route exposure sums risk_score * length_m; route mean risk is exposure / distance. Balanced routing includes time and exposure; distance is reported but not directly weighted.
 
-The GUI computes only the requested origin-to-campus routes. The offline benchmark computes all covered intersection-to-campus ODs using reverse Dijkstra. Both use the same weights. See [benchmark methods](benchmark_and_sensitivity.md) and [code walkthrough](step2_code_walkthrough.md).
+The GUI computes only the requested origin-to-campus routes. The offline benchmark computes all covered intersection-to-campus ODs using reverse Dijkstra. Both use the same weights. See [benchmark methods](benchmark_and_sensitivity.md).
+
+## Implementation flow
+
+`config.py` defines paths, campuses and speeds; `graph_builder.py` loads the graph and travel times; `safety_data.py` attaches hourly scores; `routing.py` computes paths; `exports.py` writes summaries and geometry. `backend.py` connects this pipeline to `frontend.py`.
+
+### Edge-count effect of normalization
+
+For edge cost x, summing min-max costs along n edges gives `(sum(x) - n * min(x)) / (max(x) - min(x))`. A positive minimum creates an edge-count-dependent discount, so paths with more edges can be favored relative to scaling the total cost. The time and exposure components both have this effect. Reported evaluations retain this implementation; changing it requires recomputing the benchmark and weight selection.

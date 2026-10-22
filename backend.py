@@ -160,8 +160,13 @@ def resolve_destinations(args: argparse.Namespace, config) -> list[object]:
 
 def run_routing_pipeline_from_ui(origin_lat: float, origin_lon: float, time_period: str, destination_key: str):
     """
-    Wrapper function meant to be called directly by the Streamlit frontend.
-    Returns a tuple of (geojson_path, csv_path).
+    Compute the four strategies for a GUI query and return (geojson_path, csv_path).
+
+    Origin coordinates are WGS84 latitude/longitude. destination_key accepts
+    eth_zentrum, eth_hoenggerberg, or both_campuses; time_period accepts hour
+    labels such as 8, h08, or 08:00. Reads the cached graph and active hourly
+    risk table under data/. Overwrites current-query exports under results/;
+    offline benchmark and sensitivity results are independent.
     """
     config = DEFAULT_CONFIG
     ensure_project_directories(config)

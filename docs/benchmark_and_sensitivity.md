@@ -17,16 +17,20 @@ Compute percentages per OD, then average. Report medians and distribution measur
 
 ## Benchmark
 
-Run `python scripts/benchmark_all_campus_od.py`. Four objectives: raw length, raw time, raw exposure, and balanced normalized time/exposure with alpha=0.8, beta=0.2. Reverse single-source Dijkstra computes all origins efficiently while respecting original directed weights and concrete parallel-edge selection. Eighty forward searches check objective agreement; every route is checked for shortest/fastest/safest ordering. Equal-cost ties can choose different paths.
+Run `python scripts/benchmark_all_campus_od.py`. Four objectives: raw length, raw time, raw exposure, and balanced normalized time/exposure with alpha=0.8, beta=0.2. Reverse single-source Dijkstra computes all origins efficiently while respecting directed edge weights and concrete parallel-edge selection. Eighty forward searches check objective agreement; every route is checked for shortest/fastest/safest ordering. Equal-cost ties can choose different paths.
 
 ## Sensitivity
 
 Run `python scripts/weight_sensitivity.py` after the benchmark. The score-file hash must match the benchmark metadata. Evaluate alpha=0,0.1,...,1 and beta=1-alpha: 303,578 routes. Distance is an evaluation metric, not a third objective. The 0.8/0.2 routes are checked against the final benchmark.
 
-Selected operating point: alpha=0.8, beta=0.2. Mean modeled exposure reduction 41.71%, time increase 18.24%, distance increase 2.47%, extra time 3.50 minutes relative to fastest. The alternative alpha=0.9 yields 30.54%, 8.10%, -1.70%, and 1.61 minutes. Mean thresholds of 15% time and 10% distance in the report are an illustrative decision rule; they were not the user's final selection criteria and do not guarantee per-trip limits.
+Selected operating point: alpha=0.8, beta=0.2. Mean modeled exposure reduction 41.71%, time increase 18.24%, distance increase 2.47%, extra time 3.50 minutes relative to fastest. The alternative alpha=0.9 yields 30.54%, 8.10%, -1.70%, and 1.61 minutes. Mean thresholds of 15% time and 10% distance in the report illustrate a constraint-based decision rule; they do not guarantee per-trip limits.
 
-The full grid is retained to document the selection. Min-max normalization subtracts a constant per edge, so endpoint weights need not equal raw fastest/safest objectives. The endpoint checks are recorded rather than silently changing the algorithm. The analysis supports a chosen operating point, not a mathematically unique overall best route.
+The full grid is retained to document the selection. Min-max normalization subtracts a constant per edge, so endpoint weights need not equal raw fastest/safest objectives. Endpoint checks are recorded in the analysis metadata. The analysis supports a chosen operating point, not a mathematically unique overall best route.
 
 ## Artifacts
 
-Keep compact reports, summaries, OD coordinates, validation evidence, metadata, and figures in Git. Large route-level comparison CSVs are regenerated locally and ignored. Input SHA-256 hashes link results to specific graph and score files. Historical trials and old risk-model benchmarks are removed from final presentation.
+Keep compact reports, summaries, OD coordinates, validation evidence, metadata, and figures in Git. Large route-level comparison CSVs are regenerated locally and ignored. Input SHA-256 hashes link results to specific graph and score files.
+
+### Edge-count effect of normalization
+
+For edge cost x, summing min-max costs along n edges gives `(sum(x) - n * min(x)) / (max(x) - min(x))`. A positive minimum creates an edge-count-dependent discount, so paths with more edges can be favored relative to scaling the total cost. The time and exposure components both have this effect. Reported evaluations retain this implementation; changing it requires recomputing the benchmark and weight selection.

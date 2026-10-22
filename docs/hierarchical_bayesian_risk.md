@@ -1,6 +1,6 @@
-# Hierarchical Bayesian accident risk update
+# Hierarchical Bayesian accident risk model
 
-Run `python scripts/update_bayesian_risk.py` from the repository root. This is the canonical Step 1 pipeline. The obsolete fixed-smoothing notebook has been removed.
+The risk-processing pipeline associates bicycle accident records with road segments, estimates hourly accident intensity through hierarchical Bayesian partial pooling, and converts posterior means into routing risk scores. Run `python scripts/update_bayesian_risk.py` from the repository root.
 
 For each clock hour, let y_i be buffered bicycle-accident counts over the available years and E_i be segment length (km, floored at 0.01 km) times observed calendar-year coverage. The model is:
 
@@ -13,11 +13,11 @@ Road-class and city means are jointly inferred, rather than fitted and plugged i
 
 The conditional posterior mean is (y_i+2)/(E_i+2/mu_g), a weighted blend of the raw rate y_i/E_i and mu_g. Sparse counts are regularized and zero counts do not imply zero latent risk. The prior precision (shape=2) and road-class log standard deviation (1) are fixed, explicit modeling choices; they are not estimated and require subsequent sensitivity analysis.
 
-The 50m spatial assignment matches the legacy method. Exact reverse-direction physical geometries are consolidated before fitting. One accident can still be counted near several different segments; the resulting Poisson likelihood is a working model with dependent spatial observations, so uncertainty can be optimistic. Segment length-years are a spatial opportunity proxy, not cyclist volume or person-distance exposure. The rates are neighborhood accident-intensity estimates, not individual crash probabilities. Year-to-year network/traffic changes and severity are not modeled. Hours are fitted separately and do not borrow strength across neighboring hours.
+Accidents are associated with road segments using 50 m buffers. Exact reverse-direction physical geometries are consolidated before fitting. One accident can still be counted near several different segments; the resulting Poisson likelihood is a working model with dependent spatial observations, so uncertainty can be optimistic. Segment length-years are a spatial opportunity proxy, not cyclist volume or person-distance exposure. The rates are neighborhood accident-intensity estimates, not individual crash probabilities. Year-to-year network/traffic changes and severity are not modeled. Hours are fitted separately and do not borrow strength across neighboring hours.
 
 For routing compatibility, posterior means are min-max normalized per hour, combined with the existing road-class penalty (3 * normalized intensity + penalty), and percentile ranked to risk_score. safety_score = 1-risk_score. Conditional posterior intervals refer to latent accident intensity, not the final percentile risk score. Existing routing objectives are unchanged.
 
-Outputs under results/bayesian_risk include the immutable first pre-update backup, candidate scores, physical-segment/hour posterior means and uncertainty, sampling diagnostics, and score changes on matched legacy edges. Default scores are replaced only after diagnostics pass. Final benchmark and example routes use this model and balanced time/risk weights of 0.8/0.2. Rebuilding scores requires rerunning downstream analyses.
+Outputs under results/bayesian_risk include physical-segment/hour posterior means and uncertainty, sampling diagnostics, and compact summaries. The hourly score table is activated after diagnostics pass. Benchmark and example routes use balanced time/risk weights of 0.8/0.2. Rebuilding scores requires rerunning downstream analyses.
 
 No held-out temporal predictive validation has yet been performed. Partial pooling and final trade-off evaluation are implemented; improved out-of-sample predictive accuracy is not established. See benchmark_and_sensitivity.md for final evaluation methods.
 
@@ -26,3 +26,7 @@ No held-out temporal predictive validation has yet been performed. Partial pooli
 8,753 bicycle accidents; 25,481 consolidated physical segments; 45,254 directed edges; 24 hours. Maximum classical R-hat across all hours: 1.01012; minimum autocorrelation ESS: 598.98. These checks establish acceptable mixing under the stated diagnostics, not model validity. The 95% latent-rate intervals use 240 conditional posterior mixture samples and have Monte Carlo error. Posterior means and standard deviations integrate all 4,800 retained hyperparameter draws per hour.
 
 The active score CSV is Git LFS tracked. Full posterior and backup CSVs are local ignored outputs; compact posterior_summary.csv and posterior_sample_h08.csv are retained for review.
+
+### Accident-intensity coefficient
+
+The coefficient 3 in `3 * normalized intensity + road penalty` is a fixed heuristic emphasizing accident intensity, also present in the initial scoring implementation. It is not inferred by the Bayesian model and has not been calibrated or sensitivity-tested. The full road-class penalty table ranges from 0 to 1; primary=0.65 is not its maximum.
