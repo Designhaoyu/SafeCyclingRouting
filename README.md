@@ -6,7 +6,7 @@ A Python-based cycling route recommender for Zurich, developed for the *Computer
 
 **Key result:** Across 27,598 OD pairs, balanced routing (alpha=0.8) reduces the modeled exposure index by **41.71%**, with **18.24%** more estimated travel time (**3.50 minutes**). 
 
-![Live app](docs/images/app-preview.png)
+![Live app](docs/images/app_preview.jpeg)
 
 ## Overview
 
@@ -44,8 +44,8 @@ The input contains 70,767 police-registered accidents from 2011-2025, including 
 For segment i, road class g and hour h:
 
 $$
-y_{ih}\mid\lambda_{ih}\sim\operatorname{Poisson}(E_i\lambda_{ih}),\qquad
-\lambda_{ih}\mid\mu_{gh}\sim\operatorname{Gamma}(2,2/\mu_{gh})
+y_{ih}\mid\lambda_{ih}\sim\mathrm{Poisson}(E_i\lambda_{ih}),\qquad
+\lambda_{ih}\mid\mu_{gh}\sim\mathrm{Gamma}(2,2/\mu_{gh})
 $$
 
 $$
@@ -63,7 +63,7 @@ $$
 Let m be this mean averaged over the group-mean posterior. The routing score is:
 
 $$
-r_{eh}=\operatorname{PercentileRank}_{e}\!\left(
+r_{eh}=\mathrm{PercentileRank}_{e}\!\left(
 3\frac{m_{eh}-\min_e m_{eh}}{\max_e m_{eh}-\min_e m_{eh}}+p_e
 \right),\qquad s_{eh}=1-r_{eh}.
 $$
@@ -113,7 +113,7 @@ Sensitivity analysis sweeps alpha=0,0.1,...,1 over the same OD pairs. Based on t
 | Balanced (0.8 / 0.2) | 41.71% | 18.24% | +2.47% | 3.50 min |
 | Safest | 52.67% | 94.85% | +52.72% | 19.01 min |
 
-Changes are calculated per OD against the raw fastest route, then averaged. **These are relative changes in a modeled exposure index, not observed reductions in accident probability or crash counts.** The score r is a percentile rank, so summing r times length does not estimate the number of accidents.
+Changes are calculated per OD against the raw fastest route, then averaged. These are relative changes in a modeled exposure index. The score r is a percentile rank, so summing r times length does not estimate the number of accidents.
 
 **Normalization limitation:** For any edge cost x and a path with n edges, the implemented min-max sum is
 
@@ -157,16 +157,17 @@ SafeCyclingRouting/
 
 To reproduce everything, run the four scripts in the listed order. Bayesian fitting is optional when using the supplied score table. Rebuilding scores requires rerunning downstream analyses. Large reproducible posterior and route-level CSVs remain local; compact reports, diagnostics and figures are included in Git.
 
-## Data Sources & Limitations
+## Data Sources
 
-- [Zurich accident data](https://data.stadt-zuerich.ch/dataset/sid_dav_strassenverkehrsunfallorte): provider Bundesamt fuer Strassen ASTRA; attribution required under the source's stated licence.
+- [Zurich accident data](https://data.stadt-zuerich.ch/dataset/sid_dav_strassenverkehrsunfallorte): **Creative Commons Attribution (CC BY)**, as listed on the dataset page (no version specified). Published through Open Data Zurich; data supplier: **Bundesamt für Strassen (ASTRA)**; data owner: **Dienstabteilung Verkehr, Sicherheitsdepartement, Stadt Zürich**. Required source attribution: **Bundesamt für Strassen ASTRA**.
 - [OpenStreetMap](https://www.openstreetmap.org/copyright): cycling network, ODbL.
-- Length-years are an exposure proxy; cyclist traffic volumes are unavailable. Counts describe accident intensity, not per-trip crash risk.
-- One accident can contribute to several nearby segments, creating spatial dependence. Historical reporting, network changes and road-class penalties also affect estimates.
-- Sampling diagnostics check mixing, not predictive validity. Held-out temporal validation and uncertainty propagation into route selection have not been performed.
-- Reported benefits are model-based at 08:00. Estimated times do not include live traffic or elevation.
 
-Future work includes traffic-volume adjustment, temporal validation, additional departure hours and comparison with external route planners.
+##  Limitations
+- Length-years are an exposure proxy; cyclist traffic volumes are unavailable. Counts describe accident intensity, not per-trip crash risk.
+- Historical reporting, network changes and road-class penalties also affect estimates.
+- Sampling diagnostics check mixing, not predictive validity. Held-out temporal validation and uncertainty propagation into route selection have not been performed.
+
+Future work includes traffic-volume adjustment, temporal validation, and comparison with external route planners.
 
 ## License
 
