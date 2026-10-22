@@ -68,7 +68,7 @@ r_{eh}=\mathrm{PercentileRank}_{e}\!\left(
 \right),\qquad s_{eh}=1-r_{eh}.
 $$
 
-The normalized term is zero if its range is zero. Posterior means are mapped back to directed edges before hourly ranking. The road-class penalty p includes cycleway=0, residential=0.15, tertiary=0.30, secondary=0.45 and primary=0.65. The full penalty table ranges from 0 to 1. The coefficient 3 matches `3 * normalized + penalty` in [the scoring code](scripts/update_bayesian_risk.py): it is a fixed heuristic that emphasizes normalized accident intensity relative to road class, not a fitted parameter or a demonstrated scale-matching choice. It has not been sensitivity-tested; the routing-weight sweep below does not calibrate this coefficient.
+The normalized term is zero if its range is zero. Posterior means are mapped back to directed edges before hourly ranking. The road-class penalty p includes cycleway=0, residential=0.15, tertiary=0.30, secondary=0.45 and primary=0.65. The full penalty table ranges from 0 to 1. The coefficient 3 matches `3 * normalized + penalty` in [the scoring code](scripts/update_bayesian_risk.py): it is a fixed heuristic that emphasizes normalized accident intensity relative to road class. 
 
 Output: `data/processed/zurich_hourly_edge_safety_score.csv`, with edge identity, hour, `risk_score` and `safety_score`. Lower risk scores indicate safer relative rankings. Posterior uncertainty describes accident intensity, not the percentile score or an individual crash probability.
 
@@ -85,7 +85,7 @@ For path P, risk exposure is $R(P)=\sum_{e\in P}r_{eh}L_e$. The four edge object
 | `safest_route` | Risk exposure rL |
 | `balanced_route` | $\alpha\widetilde t+(1-\alpha)\widetilde{rL}$ |
 
-Tildes denote graph-wide edge min-max normalization. Alpha ranges from 0 to 1; increasing it prioritizes time. Distance is an evaluation metric, not a third balanced objective. Travel time uses road-class cycling speeds.
+Tildes denote graph-wide edge min-max normalization. Alpha ranges from 0 to 1; increasing it prioritizes time. Travel time uses road-class cycling speeds.
 
 ```bash
 # Wiedikon to both campuses at 08:00
